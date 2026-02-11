@@ -62,17 +62,13 @@ platforms:
       name: "澎湃新闻"                # 深度调查，权威灾难报道
     - id: "ifeng"
       name: "凤凰网"                  # 国际/港台视角
-    # ── 财经 / 金融 / 股市 ──
-    - id: "wallstreetcn-hot"
-      name: "华尔街见闻·最热"
+    # ── 财经 / 金融 / 股市（6源，精简去重）──
     - id: "wallstreetcn-quick"
-      name: "华尔街见闻·快讯"          # 🆕 实时财经快讯（2分钟刷新）
-    - id: "cls-hot"
-      name: "财联社·热门"
+      name: "华尔街见闻·快讯"          # 实时财经快讯（2分钟刷新）
     - id: "cls-telegraph"
       name: "财联社·电报"
     - id: "cls-depth"
-      name: "财联社·深度"              # 🆕 深度财经分析文章
+      name: "财联社·深度"              # 深度财经分析文章
     - id: "xueqiu-hotstock"
       name: "雪球·热门股票"
     - id: "jin10"
@@ -81,8 +77,6 @@ platforms:
       name: "格隆汇"
     - id: "fastbull-express"
       name: "法布财经·快讯"            # 全球财经快讯（覆盖美股/港股，2分钟刷新）
-    - id: "mktnews-flash"
-      name: "MKTNews·快讯"            # 🆕 全球金融实时快讯（2分钟刷新）
     # ── 科技 / AI ──
     - id: "36kr-quick"
       name: "36氪·快讯"
@@ -199,9 +193,9 @@ report:
   # false: 按匹配到的热点条数排序（条数多的在前）
   sort_by_position_first: false
 
-  rank_threshold: 5                   # 排名高亮阈值
+  rank_threshold: 10                  # 排名高亮阈值（提高到10，减少高亮噪音）
 
-  max_news_per_keyword: 0             # 每个关键词最大显示数量（0=不限制）
+  max_news_per_keyword: 5             # 每个关键词最大显示数量（限制每组最多5条）
 
 
 # ===============================================================
@@ -249,9 +243,9 @@ display:
   #   - AI 分析：由 ai.include_standalone 开关控制，将完整数据送入 AI 做深度分析
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
-    platforms: ["wallstreetcn-hot", "wallstreetcn-quick", "cls-telegraph", "jin10", "fastbull-express", "mktnews-flash"]  # 财经核心实时源
+    platforms: ["wallstreetcn-quick", "cls-telegraph", "jin10", "fastbull-express"]  # 财经核心实时源
     rss_feeds: ["yahoo-finance", "cnbc-top", "cnbc-world", "marketwatch-top"]    # 美国财经 RSS
-    max_items: 20                     # 每个源最多展示条数（0=不限制）
+    max_items: 10                     # 每个源最多展示条数（从20缩减到10）
 
 
 # ===============================================================
@@ -462,7 +456,7 @@ ai_analysis:
   mode: "follow_report"
 
   # 分析内容配置
-  max_news_for_analysis: 150        # 热榜+RSS 合计参与分析的新闻数量上限（控制成本关键项）
+  max_news_for_analysis: 80         # 热榜+RSS 合计参与分析的新闻数量上限（从150缩减到80，控制信息量和成本）
                                     # 热榜优先占用配额，RSS 使用剩余配额；独立展示区不受此限制
                                     # 推送消息顶部会显示实际的 AI 分析数供参考
 
