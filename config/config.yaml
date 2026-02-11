@@ -55,28 +55,48 @@ schedule:
 platforms:
   enabled: true                         # 是否启用热榜平台抓取
   sources:
-    - id: "toutiao"
-      name: "今日头条"
-    - id: "baidu"
-      name: "百度热搜"
-    - id: "wallstreetcn-hot"
-      name: "华尔街见闻"
-    - id: "thepaper"
-      name: "澎湃新闻"
-    - id: "bilibili-hot-search"
-      name: "bilibili 热搜"
-    - id: "cls-hot"
-      name: "财联社热门"
-    - id: "ifeng"
-      name: "凤凰网"
-    - id: "tieba"
-      name: "贴吧"
+    # ── 综合新闻（覆盖灾难/突发事件）──
     - id: "weibo"
-      name: "微博"
-    - id: "douyin"
-      name: "抖音"
+      name: "微博"                    # 突发事件最快
+    - id: "thepaper"
+      name: "澎湃新闻"                # 深度调查，权威灾难报道
+    - id: "ifeng"
+      name: "凤凰网"                  # 国际/港台视角
+    # ── 财经 / 金融 / 股市 ──
+    - id: "wallstreetcn-hot"
+      name: "华尔街见闻·最热"
+    - id: "wallstreetcn-quick"
+      name: "华尔街见闻·快讯"          # 🆕 实时财经快讯（2分钟刷新）
+    - id: "cls-hot"
+      name: "财联社·热门"
+    - id: "cls-telegraph"
+      name: "财联社·电报"
+    - id: "cls-depth"
+      name: "财联社·深度"              # 🆕 深度财经分析文章
+    - id: "xueqiu-hotstock"
+      name: "雪球·热门股票"
+    - id: "jin10"
+      name: "金十数据"
+    - id: "gelonghui"
+      name: "格隆汇"
+    - id: "fastbull-express"
+      name: "法布财经·快讯"            # 全球财经快讯（覆盖美股/港股，2分钟刷新）
+    - id: "mktnews-flash"
+      name: "MKTNews·快讯"            # 🆕 全球金融实时快讯（2分钟刷新）
+    # ── 科技 / AI ──
+    - id: "36kr-quick"
+      name: "36氪·快讯"
+    - id: "36kr-renqi"
+      name: "36氪·人气榜"              # 🆕 科技热门文章排行
+    - id: "ithome"
+      name: "IT之家"                   # 🆕 实时科技新闻（AI/芯片覆盖好）
     - id: "zhihu"
       name: "知乎"
+    # ── 国际新闻 ──
+    - id: "cankaoxiaoxi"
+      name: "参考消息"
+    - id: "zaobao"
+      name: "联合早报"                 # 🆕 亚洲视角国际新闻
 
 
 
@@ -113,20 +133,31 @@ rss:
   # - 正整数：覆盖全局设置，只推送此天数内的文章
   # - 0：禁用此频道的新鲜度过滤，推送所有文章
   feeds:
-    - id: "hacker-news"
-      name: "Hacker News"
-      url: "https://hnrss.org/frontpage"
-      # max_age_days: 1               # 示例：只推送1天内的文章
-
-    - id: "ruanyifeng"
-      name: "阮一峰的网络日志"
-      url: "http://www.ruanyifeng.com/blog/atom.xml"
-      # max_age_days: 7               # 示例：推送7天内的文章（更新较慢的博客）
-    
+    # ── 美股 / 全球财经 ──
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
-      enabled: false                  # 禁用
+
+    - id: "cnbc-top"
+      name: "CNBC 头条"                # 美国财经第一门户
+      url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114"
+
+    - id: "cnbc-world"
+      name: "CNBC 全球"                # 🆕 国际财经+突发事件
+      url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362"
+
+    - id: "wsj-markets"
+      name: "华尔街日报·市场"
+      url: "https://feeds.a.dj.com/rss/RSSMarketsMain.xml"
+
+    - id: "marketwatch-top"
+      name: "MarketWatch"              # 🆕 美股实时行情与分析
+      url: "http://feeds.marketwatch.com/marketwatch/topstories"
+
+    # ── 全球视角 ──
+    - id: "ft-chinese"
+      name: "FT中文网"                  # 金融时报中文版（全球财经深度）
+      url: "https://www.ftchinese.com/rss/feed"
 
     # 自定义源示例
     # - id: "custom-feed"
@@ -218,8 +249,8 @@ display:
   #   - AI 分析：由 ai.include_standalone 开关控制，将完整数据送入 AI 做深度分析
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
-    platforms: ["zhihu", "wallstreetcn-hot"]     # 热榜平台 ID 列表（如 ["zhihu", "weibo"]）
-    rss_feeds: []                     # RSS 源 ID 列表（如 ["hacker-news"]）
+    platforms: ["wallstreetcn-hot", "wallstreetcn-quick", "cls-telegraph", "jin10", "fastbull-express", "mktnews-flash"]  # 财经核心实时源
+    rss_feeds: ["yahoo-finance", "cnbc-top", "cnbc-world", "marketwatch-top"]    # 美国财经 RSS
     max_items: 20                     # 每个源最多展示条数（0=不限制）
 
 
@@ -443,7 +474,7 @@ ai_analysis:
                                       # GitHub Action 部署默认推送约 20 次（每小时推送一次）， 约 0.1 元/天
                                       # Docker 部署默认推送 48 次(每半小时推送一次)， 约 0.2 元/天
 
-  include_rss: false                # 是否包含 RSS 内容进行分析
+  include_rss: true                 # 包含 RSS（雅虎财经等）内容进行 AI 分析
   
   include_standalone: true          # 是否将独立展示区数据纳入 AI 分析（只需上方 display 区的 standalone 配置了平台/RSS 即可）
 
