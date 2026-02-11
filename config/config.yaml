@@ -243,8 +243,8 @@ display:
   #   - AI 分析：由 ai.include_standalone 开关控制，将完整数据送入 AI 做深度分析
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
-    platforms: ["wallstreetcn-quick", "cls-telegraph", "jin10", "fastbull-express"]  # 财经核心实时源
-    rss_feeds: ["yahoo-finance", "cnbc-top", "cnbc-world", "marketwatch-top"]    # 美国财经 RSS
+    platforms: []                     # 按需添加平台 ID
+    rss_feeds: []                     # 按需添加 RSS ID
     max_items: 10                     # 每个源最多展示条数（从20缩减到10）
 
 
